@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-patient-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-patient-mysql
+  template:
+    metadata:
+      labels:
+        app: ms-patient-mysql
+    spec:
+      containers:
+      - name: ms-patient-mysql-container
+        image: ms-patient-mysql-image
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8085
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-patient-mysql
+spec:
+  type: NodePort
+  selector:
+    app: ms-patient-mysql
+  ports:
+  - port: 8085
+    targetPort: 8085
+    nodePort: 30085
